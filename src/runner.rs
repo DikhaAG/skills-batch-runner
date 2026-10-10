@@ -127,7 +127,24 @@ fn run_single_task(task: &SkillTask, target_dir: &Path, verbose: bool) -> Result
         let details = if !stderr.is_empty() {
             stderr
         } else if !stdout.is_empty() {
-            stdout
+            // Ambil baris-baris pesan error penting dari stdout npx
+            let error_lines: Vec<&str> = stdout
+                .lines()
+                .filter(|line| {
+                    let l = line.trim();
+                    l.contains("No valid skills")
+                        || l.contains("Error")
+                        || l.contains("error")
+                        || l.starts_with('└')
+                        || l.contains("not found")
+                })
+                .collect();
+
+            if !error_lines.is_empty() {
+                error_lines.join(" | ")
+            } else {
+                stdout.lines().last().unwrap_or(&stdout).trim().to_string()
+            }
         } else {
             format!("Subproses keluar dengan kode: {:?}", output.status.code())
         };
