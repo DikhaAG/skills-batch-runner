@@ -129,7 +129,26 @@ cargo run -- -f skills.txt -t ~/Desktop/my-web-app -v
 
 ---
 
-## 🔍 Penanganan Kendala (Troubleshooting)
+## 🔍 Penanganan Kendala & Catatan Output (Troubleshooting)
+
+### 1. Peringatan: `⚠ Skipped .../SKILL.md — missing required frontmatter field(s)`
+* **Penyebab**: Peringatan ini berasal dari biner bawaan `npx skills` saat memindai repositori Git yang baru di-clone. Jika repositori tersebut memuat file Markdown atau dokumentasi lain yang bukan berformat *skill* resmi (tidak memiliki header `name` dan `description`), `npx skills` akan menampilkan peringatan *warning*.
+* **Dampak**: **Tidak berbahaya dan bukan error dari `sbr`**. `npx skills` akan mengabaikan file dokumentasi non-skill tersebut dan tetap memasang skill yang valid.
+
+### 2. Mengapa Suatu Skill Berstatus `[GAGAL]`?
+Di ringkasan akhir, skill berstatus `[GAGAL]` biasanya disebabkan oleh hal-hal berikut:
+1. **Nama Skill Tidak Ditemukan**: Nama skill pada bendera `--skill <NAMA>` tidak terdaftar di repositori Git yang dituju (misal: repositori telah di-*rename*, atau skill telah dihapus oleh pemiliknya).
+2. **Repositori Kosong / Format Tidak Kompatibel**: Repositori GitHub tersebut tidak memuat struktur `SKILL.md` yang valid sama sekali (*No valid skills found*).
+
+> 💡 **Tips Praktis**: Selalu gunakan bendera `--continue-on-error` saat mengeksekusi puluhan skill sekaligus:
+> ```bash
+> cargo run -- -f skills.txt -t /path/ke/proyek --continue-on-error
+> ```
+> Dengan bendera ini, jika ada repositori pihak ketiga yang rusak atau nama skill yang salah, `sbr` tidak akan terhenti dan akan terus menginstal sisa skill yang valid sampai selesai.
+
+---
+
+### 3. Tabel Galat Pre-Flight Umum
 
 | Pesan Error | Penyebab | Solusi |
 | :--- | :--- | :--- |
@@ -137,6 +156,7 @@ cargo run -- -f skills.txt -t ~/Desktop/my-web-app -v
 | `File input tidak ditemukan: ...` | Jalur berkas `-f` salah ketik atau belum ada. | Pastikan berkas `skills.txt` berada di folder yang sesuai. |
 | `Direktori target tidak ditemukan: ...` | Folder target pada opsi `-t` belum dibuat. | Buat direktori tujuan terlebih dahulu (`mkdir -p <target>`). |
 | `Tidak memiliki izin tulis pada direktori target` | Direktori tujuan dikunci oleh sistem operasi / *read-only*. | Periksa hak akses (`chmod +w <target>`) atau pilih direktori pengguna lain. |
+| `No valid skills found` | Repositori GitHub asal tidak memiliki spesifikasi `SKILL.md`. | Periksa kembali URL repositori GitHub atau ganti dengan sumber alternatif. |
 
 ---
 
