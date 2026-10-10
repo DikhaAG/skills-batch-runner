@@ -1,0 +1,14 @@
+[package]
+name = "sbr"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+anyhow = "1.0"
+thiserror = "2.0"
+indicatif = "0.17"
+which = "7.0"
+url = "2.5"
+indexmap = "2.7"
+console = "0.15"

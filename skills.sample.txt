@@ -1,0 +1,8 @@
+# Format 1: Raw npx command
+npx skills add https://github.com/getcargohq/cargo-skills --skill cargo-workspace-management
+
+# Duplicate entry with alternative pair format (akan otomatis terdeduplikasi)
+https://github.com/getcargohq/cargo-skills cargo-workspace-management
+
+# Format 2: Pair format
+https://github.com/svssdeva/agentic-skills cargo-workspace-scaffold
